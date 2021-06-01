@@ -1,23 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useReducer } from "react";
 import axios from "axios";
 import { Button, Box } from "@material-ui/core";
-
-export const addToWaitingList = async (mobileNumber, emailAddress) => {
-  let requestBody = {
-    emailAddress: emailAddress,
-    mobileNumber: mobileNumber,
-  };
-  let response = await axios
-    .post("http://localhost:7005/api/waiting-list", requestBody)
-    .then((response) => {
-      console.log("api response", response);
-      return response.data;
-    })
-    .catch((error) => {
-      return { status: "error", message: error.response.data.message };
-    });
-  return response;
-};
+// import FormDialog from " ./formDialog";
 
 const Message = ({ message, title }) => {
   return (
@@ -28,6 +12,27 @@ const Message = ({ message, title }) => {
       <p>{message}</p>
     </div>
   );
+};
+
+const addToWaitingListHandler = async (
+  mobileNumber,
+  emailAddress,
+  setAddToWaitingListResponse,
+  setError
+) => {
+  let requestBody = {
+    emailAddress: emailAddress,
+    mobileNumber: mobileNumber,
+  };
+  let response = await axios
+    .post("http://localhost:6005/api/waiting-list", requestBody)
+    .then((response) => setAddToWaitingListResponse(response.data))
+    .catch((error) => {
+      setError({
+        status: true,
+        message: error.response.data.message,
+      });
+    });
 };
 
 const BackButton = ({ onClick }) => (
@@ -46,7 +51,7 @@ const BackButton = ({ onClick }) => (
   </Button>
 );
 
-const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
+const WaitingList = ({ setShowDialogFlag }) => (
   <Box>
     <p>Hey folks, </p>
     <span>
@@ -76,7 +81,7 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
           borderRadius: 2,
           border: "none",
         }}
-        onClick={() => waitingListHandler()}
+        onClick={() => setShowDialogFlag(true)}
       >
         join the waiting list
       </Button>
@@ -85,8 +90,7 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
 );
 
 export const SoldOutNotice = () => {
-  const [addToWaitingListCallMade, setAddToWaitingListCallMade] =
-    useState(false);
+  const [addedToWaitingList, setAddedtoWaitingList] = useState(false);
   const [addToWaitingListResponse, setAddToWaitingListResponse] = useState({
     data: "default",
   });
@@ -94,21 +98,12 @@ export const SoldOutNotice = () => {
   const [showDialogFlag, setShowDialogFlag] = useState(false);
   const addToWaitingListSuccessMessage =
     "You have been added to the waiting list";
-  let response = {};
 
   console.log("booking response", addToWaitingListResponse);
   console.log("booking error", error);
-  console.log("booking complete", addToWaitingListCallMade);
+  console.log("booking complete", addedToWaitingList);
 
   console.log("booking response status", addToWaitingListResponse.status);
-
-  const waitingListHandler = async () => {
-    console.log("in waiting list handler");
-    response = await addToWaitingList(1231231231, "sample@domain");
-    setAddToWaitingListResponse(response);
-    setAddToWaitingListCallMade(true);
-    console.log("waiting list handler response", response);
-  };
 
   return addToWaitingListResponse.data === "default" && !error.status ? (
     <div
@@ -119,12 +114,19 @@ export const SoldOutNotice = () => {
         lineHeight: "27.2px",
       }}
     >
-      <WaitingList
-        setShowDialogFlag={setShowDialogFlag}
-        waitingListHandler={waitingListHandler}
-      />
+      {/* {showDialogFlag ? (
+        <FormDialog
+          displayData={{ title: "Join waiting list" }}
+          open={showDialogFlag}
+          onClose={setShowDialogFlag}
+          addToWaitingListHandler={addToWaitingListHandler}
+          setAddToWaitingListResponse={setAddToWaitingListResponse}
+          setError={setError}
+        />
+      ) : null} */}
+      <WaitingList setShowDialogFlag={setShowDialogFlag} />
     </div>
-  ) : addToWaitingListResponse.status === "success" ? (
+  ) : addToWaitingListResponse.status ? (
     <div>
       <Message
         title={addToWaitingListResponse.status}
@@ -139,7 +141,7 @@ export const SoldOutNotice = () => {
     </div>
   ) : (
     <div>
-      <Message title={"Error"} message={addToWaitingListResponse.message} />
+      <Message title={"Error"} message={error.message} />
       <BackButton
         onClick={() => {
           setAddToWaitingListResponse({ data: "default" });
@@ -150,7 +152,8 @@ export const SoldOutNotice = () => {
   );
 };
 
-const App = () => {
+const EventBooking = () => {
+  //sold out set to true on purpose as it meets the requirement
   const [soldOut, setSoldOut] = useState(true);
 
   return (
@@ -165,4 +168,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default EventBooking;
