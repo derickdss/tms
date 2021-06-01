@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import EventScheduleList from "./eventScheduleList";
 
 const DemoTabs = (props) => {
-  const { labelId, onChange, selectionFollowsFocus, value } = props;
+  const { labelId, onChange, selectionFollowsFocus, value, tabValues } = props;
 
   return (
     <AppBar position="static" style={{ background: "white" }}>
@@ -18,7 +18,7 @@ const DemoTabs = (props) => {
         selectionFollowsFocus={selectionFollowsFocus}
         value={value}
       >
-        {["Events", "Gallery", "About", "News", "Faqs"].map((tab, index) => (
+        {tabValues.map((tab, index) => (
           <Tab
             key={index + tab + index}
             label={tab}

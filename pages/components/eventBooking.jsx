@@ -12,7 +12,6 @@ export const addToWaitingList = async (mobileNumber, emailAddress) => {
   let response = await axios
     .post("http://localhost:7005/api/waiting-list", requestBody)
     .then((response) => {
-      console.log("api response", response);
       return response.data;
     })
     .catch((error) => {
@@ -71,18 +70,10 @@ export const SoldOutNotice = () => {
     "You have been added to the waiting list";
   let response = {};
 
-  console.log("booking response", addToWaitingListResponse);
-  console.log("booking error", error);
-  console.log("booking complete", addToWaitingListCallMade);
-
-  console.log("booking response status", addToWaitingListResponse.status);
-
   const waitingListHandler = async (mobileNumber, emailAddress) => {
-    console.log("in waiting list handler");
     response = await addToWaitingList(mobileNumber, emailAddress);
     setAddToWaitingListResponse(response);
     setAddToWaitingListCallMade(true);
-    console.log("waiting list handler response", response);
   };
 
   return addToWaitingListResponse.data === "default" && !error.status ? (

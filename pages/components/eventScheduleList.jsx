@@ -2,7 +2,6 @@ import React from "react";
 import EventBooking from "./eventBooking";
 
 const ThreeRowColumn = ({ rows = [] }) => {
-  console.log("rows style", rows[0]);
   return (
     <div style={{ display: "flex" }}>
       <div
