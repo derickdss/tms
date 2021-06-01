@@ -14,28 +14,7 @@ const Message = ({ message, title }) => {
   );
 };
 
-const addToWaitingListHandler = async (
-  mobileNumber,
-  emailAddress,
-  setAddToWaitingListResponse,
-  setError
-) => {
-  let requestBody = {
-    emailAddress: emailAddress,
-    mobileNumber: mobileNumber,
-  };
-  let response = await axios
-    .post("http://localhost:6005/api/waiting-list", requestBody)
-    .then((response) => setAddToWaitingListResponse(response.data))
-    .catch((error) => {
-      setError({
-        status: true,
-        message: error.response.data.message,
-      });
-    });
-};
-
-const BackButton = ({ onClick }) => (
+const LabelledButton = ({ label, onClick }) => (
   <Button
     style={{
       fontSize: "medium",
@@ -47,11 +26,28 @@ const BackButton = ({ onClick }) => (
     }}
     onClick={onClick}
   >
-    Back
+    {label}
   </Button>
 );
 
-const WaitingList = ({ setShowDialogFlag }) => (
+export const addToWaitingList = async (mobileNumber, emailAddress) => {
+  let requestBody = {
+    emailAddress: emailAddress,
+    mobileNumber: mobileNumber,
+  };
+  let response = await axios
+    .post("http://localhost:7005/api/waiting-list", requestBody)
+    .then((response) => {
+      console.log("api response", response);
+      return response.data;
+    })
+    .catch((error) => {
+      return { status: "error", message: error.response.data.message };
+    });
+  return response;
+};
+
+const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
   <Box>
     <p>Hey folks, </p>
     <span>
@@ -81,16 +77,16 @@ const WaitingList = ({ setShowDialogFlag }) => (
           borderRadius: 2,
           border: "none",
         }}
-        onClick={() => setShowDialogFlag(true)}
+        onClick={() => waitingListHandler()}
       >
         join the waiting list
       </Button>
     </div>
   </Box>
 );
-
 export const SoldOutNotice = () => {
-  const [addedToWaitingList, setAddedtoWaitingList] = useState(false);
+  const [addToWaitingListCallMade, setAddToWaitingListCallMade] =
+    useState(false);
   const [addToWaitingListResponse, setAddToWaitingListResponse] = useState({
     data: "default",
   });
@@ -98,12 +94,21 @@ export const SoldOutNotice = () => {
   const [showDialogFlag, setShowDialogFlag] = useState(false);
   const addToWaitingListSuccessMessage =
     "You have been added to the waiting list";
+  let response = {};
 
   console.log("booking response", addToWaitingListResponse);
   console.log("booking error", error);
-  console.log("booking complete", addedToWaitingList);
+  console.log("booking complete", addToWaitingListCallMade);
 
   console.log("booking response status", addToWaitingListResponse.status);
+
+  const waitingListHandler = async () => {
+    console.log("in waiting list handler");
+    response = await addToWaitingList(1231231231, "sample@domain");
+    setAddToWaitingListResponse(response);
+    setAddToWaitingListCallMade(true);
+    console.log("waiting list handler response", response);
+  };
 
   return addToWaitingListResponse.data === "default" && !error.status ? (
     <div
@@ -114,25 +119,19 @@ export const SoldOutNotice = () => {
         lineHeight: "27.2px",
       }}
     >
-      {/* {showDialogFlag ? (
-        <FormDialog
-          displayData={{ title: "Join waiting list" }}
-          open={showDialogFlag}
-          onClose={setShowDialogFlag}
-          addToWaitingListHandler={addToWaitingListHandler}
-          setAddToWaitingListResponse={setAddToWaitingListResponse}
-          setError={setError}
-        />
-      ) : null} */}
-      <WaitingList setShowDialogFlag={setShowDialogFlag} />
+      <WaitingList
+        setShowDialogFlag={setShowDialogFlag}
+        waitingListHandler={waitingListHandler}
+      />
     </div>
-  ) : addToWaitingListResponse.status ? (
+  ) : addToWaitingListResponse.status === "success" ? (
     <div>
       <Message
         title={addToWaitingListResponse.status}
         message={addToWaitingListSuccessMessage}
       />
-      <BackButton
+      <LabelledButton
+        label={"Back"}
         onClick={() => {
           setAddToWaitingListResponse({ data: "default" });
           setError({ status: false, message: "" });
@@ -141,8 +140,9 @@ export const SoldOutNotice = () => {
     </div>
   ) : (
     <div>
-      <Message title={"Error"} message={error.message} />
-      <BackButton
+      <Message title={"Error"} message={addToWaitingListResponse.message} />
+      <LabelledButton
+        label={"Back"}
         onClick={() => {
           setAddToWaitingListResponse({ data: "default" });
           setError({ status: false, message: "" });

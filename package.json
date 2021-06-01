@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "post-update": "yarn upgrade --latest",
-    "test": "jests"
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.4.0",
