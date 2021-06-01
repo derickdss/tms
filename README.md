@@ -28,7 +28,9 @@ The body should be JSON and contain `emailAddress` and `mobileNumber` fields
 
 The App
 This app will give you a landing page that shows you avaialble event(just 1 in this case), from where you can proceed to book tickets for the event.
-In this case, we're going to be assuming that the tickets for a show have run out and focus on sending the necessary apis to add our contact information onto the waiting list. Bulk of the content on the landing page is for UI purposes only and doesnt really have a functional role.
+In this case, we're going to be assuming that the tickets for a show have run out and focus on sending the necessary apis to add our contact information onto the waiting list. 
+
+Bulk of the content on the landing page is for UI purposes only and doesnt really have a functional role. The Appbar tabs have some accessibiltiy features.
 
 The main functional component is associated with the "Join waiting list" button. When clicked, the button would open a Form dialog to give you an option to enter you mobile and email information. I have skipped adding a validator as this gives you an easy whay to test some of the use cases of showing errors.
 When you submit the form data, the data is then passed onto the addToWaitingList function which in turn fires a POST api to api/waiting-list with the necessary headers. Depending on the informaiton you have passed, you will either get a success or error message.
