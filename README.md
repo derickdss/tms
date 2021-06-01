@@ -35,4 +35,6 @@ When you submit the form data, the data is then passed onto the addToWaitingList
 
 There are also some unit tests written which can be executed using `npm test`.
 
+the web app can be run using `npm run dev -- -p <port number>` 
+
 Notes: This app was written at pace and there were some things I would have liked to change but was forced to leave them alone cause of time constraints for now. These are things I would always come back and refactor in a real world scenario. As an example, I see the addWaitingListResponse and Error variables pretty much like duplicate code that needs to be refactored but time constraints. What appears like a quick fix might break the app.
