@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Button, Box } from "@material-ui/core";
-// import FormDialog from " ./formDialog";
 import { Message, LabelledButton } from "./uiComponents";
+import FormDialog from "./formDialog";
 
 export const addToWaitingList = async (mobileNumber, emailAddress) => {
   let requestBody = {
@@ -51,7 +51,8 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
           borderRadius: 2,
           border: "none",
         }}
-        onClick={() => waitingListHandler()}
+        // onClick={() => waitingListHandler()}
+        onClick={() => setShowDialogFlag(true)}
       >
         join the waiting list
       </Button>
@@ -76,9 +77,9 @@ export const SoldOutNotice = () => {
 
   console.log("booking response status", addToWaitingListResponse.status);
 
-  const waitingListHandler = async () => {
+  const waitingListHandler = async (mobileNumber, emailAddress) => {
     console.log("in waiting list handler");
-    response = await addToWaitingList(1231231231, "sample@domain");
+    response = await addToWaitingList(mobileNumber, emailAddress);
     setAddToWaitingListResponse(response);
     setAddToWaitingListCallMade(true);
     console.log("waiting list handler response", response);
@@ -93,6 +94,14 @@ export const SoldOutNotice = () => {
         lineHeight: "27.2px",
       }}
     >
+      {showDialogFlag ? (
+        <FormDialog
+          displayData={{ title: "Join waiting list" }}
+          open={showDialogFlag}
+          onClose={setShowDialogFlag}
+          waitingListHandler={waitingListHandler}
+        />
+      ) : null}
       <WaitingList
         setShowDialogFlag={setShowDialogFlag}
         waitingListHandler={waitingListHandler}

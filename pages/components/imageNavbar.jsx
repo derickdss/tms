@@ -70,6 +70,7 @@ const ImageNavbar = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const tabValues = ["Events", "Gallery", "About", "News", "Faqs"];
   return (
     <div>
       <img
@@ -83,8 +84,9 @@ const ImageNavbar = () => {
           onChange={handleChange}
           value={value}
           component={"div"}
+          tabValues={tabValues}
         />
-        {["Events", "Gallery", "About", "News", "Faqs"].map((tab, index) => (
+        {tabValues.map((tab, index) => (
           <TabPanel
             value={value}
             key={index + tab + index}
