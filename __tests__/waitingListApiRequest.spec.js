@@ -1,5 +1,4 @@
-import React from "react";
-import { addToWaitingList } from "../pages/eventBooking";
+import { addToWaitingList } from "../pages/components/eventBooking";
 
 describe("Waiting List Api Request", () => {
   test("it should give a success response if you provide a valid mobile number and email address", async () => {

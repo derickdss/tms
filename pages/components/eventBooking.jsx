@@ -1,34 +1,8 @@
-import React, { useState, useReducer } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Button, Box } from "@material-ui/core";
 // import FormDialog from " ./formDialog";
-
-const Message = ({ message, title }) => {
-  return (
-    <div style={{ marginTop: 50 }}>
-      <h4>
-        {`${title.substring(0, 1).toUpperCase()}${title.substring(1)}!!!`}
-      </h4>
-      <p>{message}</p>
-    </div>
-  );
-};
-
-const LabelledButton = ({ label, onClick }) => (
-  <Button
-    style={{
-      fontSize: "medium",
-      width: "fit-content",
-      color: "white",
-      backgroundColor: "#2285ff",
-      borderRadius: 2,
-      border: "none",
-    }}
-    onClick={onClick}
-  >
-    {label}
-  </Button>
-);
+import { Message, LabelledButton } from "./uiComponents";
 
 export const addToWaitingList = async (mobileNumber, emailAddress) => {
   let requestBody = {
