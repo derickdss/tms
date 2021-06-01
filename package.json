@@ -5,7 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "post-update": "yarn upgrade --latest"
+    "post-update": "yarn upgrade --latest",
+    "test": "jest"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -17,5 +18,9 @@
   "keywords": [
     "next"
   ],
-  "description": "A \"Hello World\" application with multiple pages that shows how Next.js routing works."
+  "description": "A \"Hello World\" application with multiple pages that shows how Next.js routing works.",
+  "devDependencies": {
+    "babel-jest": "^27.0.2",
+    "jest": "^27.0.3"
+  }
 }

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const addToWaitingList = async (
+export const addToWaitingList = async (
   mobileNumber,
-  emailAddress,
-  setAddToWaitingListResponse,
-  setError
+  emailAddress
+  // setAddToWaitingListResponse,
+  // setError
 ) => {
   let requestBody = {
     emailAddress: emailAddress,
@@ -13,13 +13,17 @@ const addToWaitingList = async (
   };
   let response = await axios
     .post("http://localhost:7005/api/waiting-list", requestBody)
-    .then((response) => setAddToWaitingListResponse(response.data))
+    .then((response) => {
+      console.log("api response", response);
+      // setAddToWaitingListResponse(response.data);
+      return response.data;
+    })
     .catch((error) => {
-      setError({
-        status: true,
-        message: error.response.data.message,
-      });
+      // setError({
+      return { status: "error", message: error.response.data.message };
+      // });
     });
+  return response;
 };
 
 const App = () => {
@@ -27,15 +31,22 @@ const App = () => {
     data: "default",
   });
   const [error, setError] = useState({ status: false, message: "" });
+  let response = {};
 
-  const waitingListHandler = () => {
-    addToWaitingList(
+  console.log("derd, add to waiting", addToWaitingListResponse);
+
+  const waitingListHandler = async () => {
+    response = await addToWaitingList(
       1231231231,
-      "sample@domain",
-      setAddToWaitingListResponse,
-      setError
+      "sample@domain"
+      // setAddToWaitingListResponse,
+      // setError
     );
+    setAddToWaitingListResponse(response);
   };
+
+  console.log("derd, respon se", addToWaitingListResponse);
+
   return (
     <div>
       <button onClick={waitingListHandler}>add to waiting list</button>
