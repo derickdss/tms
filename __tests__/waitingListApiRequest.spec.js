@@ -22,7 +22,7 @@ describe("Waiting List Api Request", () => {
     };
     let response = {};
 
-    response = await addToWaitingList(mobileNumber); //, emailAddress);
+    response = await addToWaitingList(mobileNumber);
     console.log("derd, respo", response.data);
     expect(response).toEqual(output);
   });

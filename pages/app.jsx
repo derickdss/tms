@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-export const addToWaitingList = async (
-  mobileNumber,
-  emailAddress
-  // setAddToWaitingListResponse,
-  // setError
-) => {
+export const addToWaitingList = async (mobileNumber, emailAddress) => {
   let requestBody = {
     emailAddress: emailAddress,
     mobileNumber: mobileNumber,
@@ -15,13 +10,10 @@ export const addToWaitingList = async (
     .post("http://localhost:7005/api/waiting-list", requestBody)
     .then((response) => {
       console.log("api response", response);
-      // setAddToWaitingListResponse(response.data);
       return response.data;
     })
     .catch((error) => {
-      // setError({
       return { status: "error", message: error.response.data.message };
-      // });
     });
   return response;
 };
@@ -36,12 +28,7 @@ const App = () => {
   console.log("derd, add to waiting", addToWaitingListResponse);
 
   const waitingListHandler = async () => {
-    response = await addToWaitingList(
-      1231231231,
-      "sample@domain"
-      // setAddToWaitingListResponse,
-      // setError
-    );
+    response = await addToWaitingList(1231231231, "sample@domain");
     setAddToWaitingListResponse(response);
   };
 
