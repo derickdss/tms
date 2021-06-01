@@ -32,13 +32,10 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
       and mobile number. Thats all, we will notify when the next batch of
       tickets are in.
     </span>
-    <div
+    <Box
+      m={5}
       style={{
-        display: "flex",
-        flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-around",
-        margin: 40,
       }}
     >
       <Button
@@ -55,7 +52,7 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
       >
         join the waiting list
       </Button>
-    </div>
+    </Box>
   </Box>
 );
 export const SoldOutNotice = () => {
@@ -64,7 +61,6 @@ export const SoldOutNotice = () => {
   const [addToWaitingListResponse, setAddToWaitingListResponse] = useState({
     data: "default",
   });
-  const [error, setError] = useState({ status: false, message: "" });
   const [showDialogFlag, setShowDialogFlag] = useState(false);
   const addToWaitingListSuccessMessage =
     "You have been added to the waiting list";
@@ -76,15 +72,9 @@ export const SoldOutNotice = () => {
     setAddToWaitingListCallMade(true);
   };
 
-  return addToWaitingListResponse.data === "default" && !error.status ? (
-    <div
-      style={{
-        marginBottom: 30,
-        marginTop: 20,
-        fontSize: "16px",
-        lineHeight: "27.2px",
-      }}
-    >
+  return addToWaitingListResponse.data === "default" &&
+    !addToWaitingListCallMade ? (
+    <Box mb={3.8} mt={2.5} style={{ fontSize: "16px", lineHeight: "27.2px" }}>
       {showDialogFlag ? (
         <FormDialog
           displayData={{ title: "Join waiting list" }}
@@ -97,9 +87,9 @@ export const SoldOutNotice = () => {
         setShowDialogFlag={setShowDialogFlag}
         waitingListHandler={waitingListHandler}
       />
-    </div>
+    </Box>
   ) : addToWaitingListResponse.status === "success" ? (
-    <div>
+    <Box>
       <Message
         title={addToWaitingListResponse.status}
         message={addToWaitingListSuccessMessage}
@@ -108,21 +98,21 @@ export const SoldOutNotice = () => {
         label={"Back"}
         onClick={() => {
           setAddToWaitingListResponse({ data: "default" });
-          setError({ status: false, message: "" });
+          setAddToWaitingListCallMade(false);
         }}
       />
-    </div>
+    </Box>
   ) : (
-    <div>
+    <Box>
       <Message title={"Error"} message={addToWaitingListResponse.message} />
       <LabelledButton
         label={"Back"}
         onClick={() => {
           setAddToWaitingListResponse({ data: "default" });
-          setError({ status: false, message: "" });
+          setAddToWaitingListCallMade(false);
         }}
       />
-    </div>
+    </Box>
   );
 };
 
@@ -131,14 +121,14 @@ const EventBooking = () => {
   const [soldOut, setSoldOut] = useState(true);
 
   return (
-    <div>
+    <Box>
       <button disabled={soldOut}>Book Tickets</button>
       {soldOut ? (
-        <div>
+        <Box>
           <SoldOutNotice />
-        </div>
+        </Box>
       ) : null}
-    </div>
+    </Box>
   );
 };
 
