@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button, Box } from "@material-ui/core";
+import { Button, Box, CircularProgress } from "@material-ui/core";
 import { Message, LabelledButton } from "./uiComponents";
 import FormDialog from "./formDialog";
 
@@ -34,7 +34,11 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
     </span>
     <Box
       m={5}
+      display={"flex"}
+      flexDirection={"column"}
       style={{
+        display: "flex",
+        flexDirection: "column",
         alignItems: "center",
       }}
     >
@@ -47,7 +51,6 @@ const WaitingList = ({ setShowDialogFlag, waitingListHandler }) => (
           borderRadius: 2,
           border: "none",
         }}
-        // onClick={() => waitingListHandler()}
         onClick={() => setShowDialogFlag(true)}
       >
         join the waiting list
@@ -62,14 +65,17 @@ export const SoldOutNotice = () => {
     data: "default",
   });
   const [showDialogFlag, setShowDialogFlag] = useState(false);
+  const [loading, setLoading] = useState(false);
   const addToWaitingListSuccessMessage =
     "You have been added to the waiting list";
   let response = {};
 
   const waitingListHandler = async (mobileNumber, emailAddress) => {
+    setLoading(true);
     response = await addToWaitingList(mobileNumber, emailAddress);
     setAddToWaitingListResponse(response);
     setAddToWaitingListCallMade(true);
+    setLoading(false);
   };
 
   return addToWaitingListResponse.data === "default" &&
@@ -83,10 +89,14 @@ export const SoldOutNotice = () => {
           waitingListHandler={waitingListHandler}
         />
       ) : null}
-      <WaitingList
-        setShowDialogFlag={setShowDialogFlag}
-        waitingListHandler={waitingListHandler}
-      />
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <WaitingList
+          setShowDialogFlag={setShowDialogFlag}
+          waitingListHandler={waitingListHandler}
+        />
+      )}
     </Box>
   ) : addToWaitingListResponse.status === "success" ? (
     <Box>
