@@ -15,7 +15,11 @@ export const addToWaitingList = async (mobileNumber, emailAddress) => {
       return response.data;
     })
     .catch((error) => {
-      return { status: "error", message: error.response.data.message };
+      let errorMessage = "Network error, please retry later!";
+      if (error.response) {
+        errorMessage = error.response.data.message;
+      }
+      return { status: "error", message: errorMessage };
     });
   return response;
 };
