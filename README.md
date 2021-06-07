@@ -34,7 +34,8 @@ Bulk of the content on the landing page is for UI purposes only and doesnt reall
 
 There are also some unit tests written which can be executed using `npm test`.
 
-the web app can be run using `npm run dev -- -p <port number>` 
+the web app can be run using `npm run dev -- -p 7005` 
+(please use port number 7005 as I've hard coded that value in the api request.)
 
 Notes: This app was written at pace and there were some things I would have liked to change but was forced to leave them alone cause of time constraints for now. These are things I would always come back and refactor in a real world scenario.
 As always, your feedback is of great value!
